@@ -1,4 +1,4 @@
-package zanon.andl.gameapp;
+package zanon.andl.gameapp.entity;
 
 import java.util.ArrayList;
 

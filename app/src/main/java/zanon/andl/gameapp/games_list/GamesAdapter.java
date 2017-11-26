@@ -1,4 +1,4 @@
-package zanon.andl.gameapp;
+package zanon.andl.gameapp.games_list;
 
 import android.content.Context;
 import android.support.v7.widget.RecyclerView;
@@ -8,11 +8,12 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import java.util.ArrayList;
-import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
+import zanon.andl.gameapp.R;
+import zanon.andl.gameapp.entity.GamesEntity;
 
 /**
  * Created by Andre on 26/11/2017.
@@ -20,10 +21,12 @@ import butterknife.OnClick;
 
 public class GamesAdapter extends RecyclerView.Adapter<GamesAdapter.GamesViewHolder>  {
 
+    OnRecyclerItemClick onRecyclerItemClick;
+
     /**
      * GamesViewHolder e a classe que representa cada item da lista
      */
-    public static class GamesViewHolder extends RecyclerView.ViewHolder{
+    public class GamesViewHolder extends RecyclerView.ViewHolder{
 
         @BindView(R.id.nomeGame)
         TextView txtNome;
@@ -36,11 +39,13 @@ public class GamesAdapter extends RecyclerView.Adapter<GamesAdapter.GamesViewHol
             ButterKnife.bind(this, itemView);
         }
 
-        /* por enquanto nao responde ao toque
+
         @OnClick(R.id.item_recycler)
         void onItemClick(View view){
-
-        } */
+            if(onRecyclerItemClick != null){
+                onRecyclerItemClick.onClick(view, getAdapterPosition());
+            }
+        }
     }
 
     private ArrayList<GamesEntity> gamesList;
@@ -88,5 +93,9 @@ public class GamesAdapter extends RecyclerView.Adapter<GamesAdapter.GamesViewHol
     @Override
     public int getItemCount() {
         return gamesList.size();
+    }
+
+    public void setOnRecyclerItemClick(OnRecyclerItemClick onRecyclerItemClick){
+        this.onRecyclerItemClick = onRecyclerItemClick;
     }
 }

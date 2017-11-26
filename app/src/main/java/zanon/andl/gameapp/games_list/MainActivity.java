@@ -1,22 +1,31 @@
-package zanon.andl.gameapp;
+package zanon.andl.gameapp.games_list;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.Toolbar;
+import android.view.View;
 
 import java.util.ArrayList;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import zanon.andl.gameapp.R;
+import zanon.andl.gameapp.entity.GamesEntity;
+import zanon.andl.gameapp.games_detail.GamesDetail;
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends AppCompatActivity{
 
     @BindView(R.id.rv_games)
     RecyclerView mRecyclerView;
 
-    public RecyclerView.Adapter mAdapterGames;
+    @BindView(R.id.toolbar)
+    Toolbar toolbar;
+
+    public GamesAdapter mAdapterGames;
     private RecyclerView.LayoutManager mLayoutManager;
     private DividerItemDecoration mDividerItemDecoration;
     private ArrayList<GamesEntity> listaEstatica;
@@ -25,6 +34,11 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        ButterKnife.bind(this);
+
+        setSupportActionBar(toolbar);
+        getSupportActionBar().setTitle(R.string.tokengames);
 
         //lista estatica para teste de funcionamento da RecyclerView
         listaEstatica = new ArrayList<>();
@@ -43,7 +57,6 @@ public class MainActivity extends AppCompatActivity {
         listaEstatica.add(new GamesEntity("The Last of Us", "06/07/2017"));
         listaEstatica.add(new GamesEntity("The Last of Us", "06/07/2017"));
 
-        ButterKnife.bind(this);
         atualizaLista(listaEstatica);
     }
 
@@ -52,6 +65,13 @@ public class MainActivity extends AppCompatActivity {
         mRecyclerView.setLayoutManager(mLayoutManager);
 
         mAdapterGames = new GamesAdapter(listaEstatica, this);
+        mAdapterGames.setOnRecyclerItemClick(new OnRecyclerItemClick() {
+            @Override
+            public void onClick(View view, int position) {
+                Intent intent = new Intent(MainActivity.this, GamesDetail.class);
+                startActivity(intent);
+            }
+        });
         mRecyclerView.setAdapter(mAdapterGames);
 
         //adiciona linha de separacao na RecyclerView
