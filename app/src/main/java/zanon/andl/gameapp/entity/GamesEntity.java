@@ -1,46 +1,89 @@
 package zanon.andl.gameapp.entity;
 
-import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Created by Andre on 26/11/2017.
  */
 
+import java.util.List;
+import com.google.gson.annotations.Expose;
+import com.google.gson.annotations.SerializedName;
+
+/**
+ * Entidade de Games, possui
+ * todos os atributos correspondentes ao arquivo JSON
+ */
+
 public class GamesEntity {
 
-    private int id;
-    private String imagem;
-    private String nome;
-    private String data;
+    //assinatura serializable do GSON faz com
+    //que o GSON tranforme o JSON no atributo correto
+    @SerializedName("id")
+    @Expose
+    private Integer id;
+    @SerializedName("name")
+    @Expose
+    private String name;
+    @SerializedName("image")
+    @Expose
+    private String image;
+    @SerializedName("release_date")
+    @Expose
+    private String releaseDate;
+    @SerializedName("trailer")
+    @Expose
     private String trailer;
-    private ArrayList<String> plataformas;
+    @SerializedName("platforms")
+    @Expose
+    private List<String> platforms = null;
 
-    public GamesEntity(String nome, String data){
-        this.nome = nome;
-        this.data = data;
-    }
-
-    public int getId() {
+    public Integer getId() {
         return id;
     }
 
-    public String getImagem() {
-        return imagem;
+    public void setId(Integer id) {
+        this.id = id;
     }
 
-    public String getNome() {
-        return nome;
+    public String getName() {
+        return name;
     }
 
-    public String getData() {
-        return data;
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public String getImage() {
+        return image;
+    }
+
+    public void setImage(String image) {
+        this.image = image;
+    }
+
+    public String getReleaseDate() {
+        return releaseDate;
+    }
+
+    public void setReleaseDate(String releaseDate) {
+        this.releaseDate = releaseDate;
     }
 
     public String getTrailer() {
         return trailer;
     }
 
-    public ArrayList<String> getPlataformas() {
-        return plataformas;
+    public void setTrailer(String trailer) {
+        this.trailer = trailer;
     }
+
+    public List<String> getPlatforms() {
+        return platforms;
+    }
+
+    public void setPlatforms(List<String> platforms) {
+        this.platforms = platforms;
+    }
+
 }

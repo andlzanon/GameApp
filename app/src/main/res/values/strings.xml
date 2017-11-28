@@ -1,4 +1,5 @@
 <resources>
     <string name="app_name">GameApp</string>
     <string name="tokengames">TokenGames</string>
+    <string name="msg_erro">Erro ao conectar com servidor</string>
 </resources>

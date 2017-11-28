@@ -5,9 +5,13 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.squareup.picasso.Picasso;
+
 import java.util.ArrayList;
+import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -27,6 +31,9 @@ public class GamesAdapter extends RecyclerView.Adapter<GamesAdapter.GamesViewHol
      * GamesViewHolder e a classe que representa cada item da lista
      */
     public class GamesViewHolder extends RecyclerView.ViewHolder{
+
+        @BindView(R.id.fotoGame)
+        ImageView imgGame;
 
         @BindView(R.id.nomeGame)
         TextView txtNome;
@@ -48,7 +55,7 @@ public class GamesAdapter extends RecyclerView.Adapter<GamesAdapter.GamesViewHol
         }
     }
 
-    private ArrayList<GamesEntity> gamesList;
+    private List<GamesEntity> gamesList;
     private Context context;
 
     /**
@@ -56,7 +63,7 @@ public class GamesAdapter extends RecyclerView.Adapter<GamesAdapter.GamesViewHol
      * @param gamesList lista de Games
      * @param context contexto da activity
      */
-    public GamesAdapter(ArrayList<GamesEntity> gamesList, Context context){
+    public GamesAdapter(List<GamesEntity> gamesList, Context context){
         this.gamesList = gamesList;
         this.context = context;
     }
@@ -82,8 +89,13 @@ public class GamesAdapter extends RecyclerView.Adapter<GamesAdapter.GamesViewHol
     @Override
     public void onBindViewHolder(GamesViewHolder holder, int position) {
         GamesEntity gamesEntity  = gamesList.get(position);
-        holder.txtNome.setText(gamesEntity.getNome());
-        holder.txtData.setText(gamesEntity.getData());
+        holder.txtNome.setText(gamesEntity.getName());
+        holder.txtData.setText(gamesEntity.getReleaseDate());
+        Picasso.with(context)
+                .load(gamesEntity.getImage())
+                .centerCrop()
+                .fit()
+                .into(holder.imgGame);
     }
 
     /**

@@ -34,4 +34,10 @@ dependencies {
     //dependencia d ButterKnife para os bindings
     compile 'com.jakewharton:butterknife:8.8.1'
     annotationProcessor 'com.jakewharton:butterknife-compiler:8.8.1'
+    //dependencia do GSON e Retrofit
+    compile 'com.squareup.retrofit2:retrofit:2.3.0'
+    compile 'com.squareup.retrofit2:converter-gson:2.3.0'
+    //depencia do Picasso para imagens com JSON
+    compile 'com.squareup.picasso:picasso:2.5.2'
+
 }

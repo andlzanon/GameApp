@@ -8,8 +8,10 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
+import android.widget.Toast;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -17,18 +19,20 @@ import zanon.andl.gameapp.R;
 import zanon.andl.gameapp.entity.GamesEntity;
 import zanon.andl.gameapp.games_detail.GamesDetail;
 
-public class MainActivity extends AppCompatActivity{
+public class MainActivity extends AppCompatActivity implements GamesView{
 
+    //binding com butterknife
     @BindView(R.id.rv_games)
     RecyclerView mRecyclerView;
 
     @BindView(R.id.toolbar)
     Toolbar toolbar;
 
+    //declaracoes
     public GamesAdapter mAdapterGames;
     private RecyclerView.LayoutManager mLayoutManager;
     private DividerItemDecoration mDividerItemDecoration;
-    private ArrayList<GamesEntity> listaEstatica;
+    private GamePresenter gamePresenter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -37,34 +41,29 @@ public class MainActivity extends AppCompatActivity{
 
         ButterKnife.bind(this);
 
+        //seta a action bar no topo da tela
         setSupportActionBar(toolbar);
+        //define o nome da action bar
         getSupportActionBar().setTitle(R.string.tokengames);
 
-        //lista estatica para teste de funcionamento da RecyclerView
-        listaEstatica = new ArrayList<>();
-        listaEstatica.add(new GamesEntity("Super Mario Odyssey", "10/02/2017"));
-        listaEstatica.add(new GamesEntity("Mario Kart", "05/06/2017"));
-        listaEstatica.add(new GamesEntity("Persona 5", "09/02/2017"));
-        listaEstatica.add(new GamesEntity("Zelda Breath of the Wild", "01/03/2017"));
-        listaEstatica.add(new GamesEntity("Pokemon Sun and Moon", "07/04/2017"));
-        listaEstatica.add(new GamesEntity("The Last of Us", "06/07/2017"));
-        listaEstatica.add(new GamesEntity("The Last of Us", "06/07/2017"));
-        listaEstatica.add(new GamesEntity("The Last of Us", "06/07/2017"));
-        listaEstatica.add(new GamesEntity("The Last of Us", "06/07/2017"));
-        listaEstatica.add(new GamesEntity("The Last of Us", "06/07/2017"));
-        listaEstatica.add(new GamesEntity("The Last of Us", "06/07/2017"));
-        listaEstatica.add(new GamesEntity("The Last of Us", "06/07/2017"));
-        listaEstatica.add(new GamesEntity("The Last of Us", "06/07/2017"));
-        listaEstatica.add(new GamesEntity("The Last of Us", "06/07/2017"));
+        //seta um adapter default para nao acusar erro de RecyclerView sem adapter
+        mRecyclerView.setAdapter(new GamesAdapter(new ArrayList<GamesEntity>(), this));
+        mRecyclerView.setLayoutManager(new LinearLayoutManager(this));
 
-        atualizaLista(listaEstatica);
+        //inicia um presenter
+        gamePresenter = new GamePresenter(this);
+        //acessa os dados da web
+        gamePresenter.acessaDados();
     }
 
-    private void atualizaLista(ArrayList<GamesEntity> listaEstatica) {
-        mLayoutManager = new LinearLayoutManager(this);
-        mRecyclerView.setLayoutManager(mLayoutManager);
+    /**
+     * Funcao que define a recyclerView e coloca a lista jogos para ser exibida
+     * @param lista de jogos recebidas pela web para a RecyclerView
+     */
+    @Override
+    public void atualizaLista(List<GamesEntity> lista) {
 
-        mAdapterGames = new GamesAdapter(listaEstatica, this);
+        mAdapterGames = new GamesAdapter(lista, this);
         mAdapterGames.setOnRecyclerItemClick(new OnRecyclerItemClick() {
             @Override
             public void onClick(View view, int position) {
@@ -74,11 +73,34 @@ public class MainActivity extends AppCompatActivity{
         });
         mRecyclerView.setAdapter(mAdapterGames);
 
+        mLayoutManager = new LinearLayoutManager(this);
+        mRecyclerView.setLayoutManager(mLayoutManager);
+
         //adiciona linha de separacao na RecyclerView
         mDividerItemDecoration = new DividerItemDecoration(
                 mRecyclerView.getContext(),
                 LinearLayoutManager.VERTICAL
         );
         mRecyclerView.addItemDecoration(mDividerItemDecoration);
+
+    }
+
+    /**
+     * Funcao que mostra mensagem de erro
+     * @param mensagem a ser exibida pelo toast
+     */
+    @Override
+    public void mensagemDeErro(String mensagem){
+        Toast.makeText(this, mensagem, Toast.LENGTH_SHORT).show();
+    }
+
+    /**
+     *
+     * @param id da String dos Recursos que se quer acessar
+     * @return String correspondente ao id da classe R
+     */
+    @Override
+    public String getTextFromR(int id){
+        return getResources().getString(id);
     }
 }
