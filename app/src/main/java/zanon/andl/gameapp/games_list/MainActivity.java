@@ -2,6 +2,7 @@ package zanon.andl.gameapp.games_list;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Parcelable;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
@@ -33,6 +34,7 @@ public class MainActivity extends AppCompatActivity implements GamesView{
     private RecyclerView.LayoutManager mLayoutManager;
     private DividerItemDecoration mDividerItemDecoration;
     private GamePresenter gamePresenter;
+    private List<GamesEntity> gameList;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -46,15 +48,34 @@ public class MainActivity extends AppCompatActivity implements GamesView{
         //define o nome da action bar
         getSupportActionBar().setTitle(R.string.tokengames);
 
+        if(savedInstanceState != null)
+            gameList = savedInstanceState.getParcelableArrayList("games");
+        else
+            gameList = new ArrayList<>();
+
         //seta um adapter default para nao acusar erro de RecyclerView sem adapter
-        mRecyclerView.setAdapter(new GamesAdapter(new ArrayList<GamesEntity>(), this));
+        mRecyclerView.setAdapter(new GamesAdapter(gameList, this));
         mRecyclerView.setLayoutManager(new LinearLayoutManager(this));
+
+        //adiciona linha de separacao na RecyclerView
+        mDividerItemDecoration = new DividerItemDecoration(
+                mRecyclerView.getContext(),
+                LinearLayoutManager.VERTICAL
+        );
+        mRecyclerView.addItemDecoration(mDividerItemDecoration);
 
         //inicia um presenter
         gamePresenter = new GamePresenter(this);
         //acessa os dados da web
         gamePresenter.acessaDados();
     }
+
+    @Override
+    protected void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+        outState.putParcelableArrayList("games", (ArrayList) gameList);
+    }
+
 
     /**
      * Funcao que define a recyclerView e coloca a lista jogos para ser exibida
@@ -63,7 +84,9 @@ public class MainActivity extends AppCompatActivity implements GamesView{
     @Override
     public void atualizaLista(List<GamesEntity> lista) {
 
-        mAdapterGames = new GamesAdapter(lista, this);
+        gameList = lista;
+
+        mAdapterGames = new GamesAdapter(gameList, this);
         mAdapterGames.setOnRecyclerItemClick(new OnRecyclerItemClick() {
             @Override
             public void onClick(View view, int position) {
@@ -75,14 +98,6 @@ public class MainActivity extends AppCompatActivity implements GamesView{
 
         mLayoutManager = new LinearLayoutManager(this);
         mRecyclerView.setLayoutManager(mLayoutManager);
-
-        //adiciona linha de separacao na RecyclerView
-        mDividerItemDecoration = new DividerItemDecoration(
-                mRecyclerView.getContext(),
-                LinearLayoutManager.VERTICAL
-        );
-        mRecyclerView.addItemDecoration(mDividerItemDecoration);
-
     }
 
     /**

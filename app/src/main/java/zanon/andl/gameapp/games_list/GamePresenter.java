@@ -1,15 +1,9 @@
 package zanon.andl.gameapp.games_list;
 
-import android.util.Log;
-
-import java.util.ArrayList;
-import java.util.List;
-
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 import zanon.andl.gameapp.R;
-import zanon.andl.gameapp.entity.GamesEntity;
 import zanon.andl.gameapp.entity.GamesListEntity;
 import zanon.andl.gameapp.network.ListGamesApi;
 

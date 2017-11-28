@@ -1,5 +1,8 @@
 package zanon.andl.gameapp.entity;
 
+import android.os.Parcel;
+import android.os.Parcelable;
+
 import java.util.List;
 
 /**
@@ -15,7 +18,7 @@ import com.google.gson.annotations.SerializedName;
  * todos os atributos correspondentes ao arquivo JSON
  */
 
-public class GamesEntity {
+public class GamesEntity implements Parcelable{
 
     //assinatura serializable do GSON faz com
     //que o GSON tranforme o JSON no atributo correto
@@ -84,6 +87,43 @@ public class GamesEntity {
 
     public void setPlatforms(List<String> platforms) {
         this.platforms = platforms;
+    }
+
+    private GamesEntity(Parcel from){
+        id = from.readInt();
+        name = from.readString();
+        image = from.readString();
+        releaseDate = from.readString();
+        trailer = from.readString();
+        platforms = from.createStringArrayList();
+    }
+
+    public static final Parcelable.Creator<GamesEntity>
+        CREATOR = new Parcelable.Creator<GamesEntity>(){
+
+        public GamesEntity createFromParcel(Parcel in){
+            return new GamesEntity(in);
+        }
+
+        @Override
+        public GamesEntity[] newArray(int i) {
+            return new GamesEntity[i];
+        }
+    };
+
+    @Override
+    public void writeToParcel(Parcel dest, int flags){
+        dest.writeInt(id);
+        dest.writeString(name);
+        dest.writeString(image);
+        dest.writeString(releaseDate);
+        dest.writeString(trailer);
+        dest.writeStringList(platforms);
+    }
+
+    @Override
+    public int describeContents(){
+        return 0;
     }
 
 }
