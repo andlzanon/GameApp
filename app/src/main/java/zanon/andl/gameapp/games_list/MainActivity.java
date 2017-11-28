@@ -22,6 +22,11 @@ import zanon.andl.gameapp.games_detail.GamesDetail;
 
 public class MainActivity extends AppCompatActivity implements GamesView{
 
+    //chave responsavel por salvar estado da activity
+    private final String EXTRA_SAVE = "lista_games";
+    //chave responsavel por passar objetos GameEntity entre activities
+    public final static String EXTRA_GAME = "game";
+
     //binding com butterknife
     @BindView(R.id.rv_games)
     RecyclerView mRecyclerView;
@@ -48,8 +53,9 @@ public class MainActivity extends AppCompatActivity implements GamesView{
         //define o nome da action bar
         getSupportActionBar().setTitle(R.string.tokengames);
 
+        //todo: passar para a camada Presenter
         if(savedInstanceState != null)
-            gameList = savedInstanceState.getParcelableArrayList("games");
+            gameList = savedInstanceState.getParcelableArrayList(EXTRA_SAVE);
         else
             gameList = new ArrayList<>();
 
@@ -73,7 +79,7 @@ public class MainActivity extends AppCompatActivity implements GamesView{
     @Override
     protected void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
-        outState.putParcelableArrayList("games", (ArrayList) gameList);
+        outState.putParcelableArrayList(EXTRA_SAVE, (ArrayList) gameList);
     }
 
 
@@ -91,6 +97,7 @@ public class MainActivity extends AppCompatActivity implements GamesView{
             @Override
             public void onClick(View view, int position) {
                 Intent intent = new Intent(MainActivity.this, GamesDetail.class);
+                intent.putExtra(EXTRA_GAME, gameList.get(position));
                 startActivity(intent);
             }
         });

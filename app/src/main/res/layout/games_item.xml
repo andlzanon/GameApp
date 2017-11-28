@@ -6,11 +6,10 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content">
 
-    <ImageView
+    <de.hdodenhof.circleimageview.CircleImageView
         android:id="@+id/fotoGame"
-        android:layout_width="50dp"
+        android:layout_width="70dp"
         android:layout_height="70dp"
-        android:background="@color/colorAccent"
         android:layout_marginTop="8dp"
         android:layout_marginBottom="8dp"
         android:layout_marginRight="6dp"
@@ -33,15 +32,13 @@
             android:layout_height="wrap_content"
             android:id="@+id/nomeGame"
             android:textSize="20sp"
-            android:textColor="#000000"
-            android:text="Elder Scrolls Online"/>
+            android:textColor="@color/black" />
 
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:id="@+id/dataGame"
-            android:layout_marginTop="5dp"
-            android:text="10/02/2012"/>
+            android:layout_marginTop="5dp" />
 
     </LinearLayout>
 
