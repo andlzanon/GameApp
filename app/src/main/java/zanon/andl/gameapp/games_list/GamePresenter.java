@@ -29,6 +29,7 @@ public class GamePresenter {
      * Funcao que acessa os dados da web
      */
     public void acessaDados(){
+        gamesView.initProgressBar();
         //instancia a api
         final ListGamesApi listGamesApi = ListGamesApi.getInstance();
         //chama o metdod getGames que faz o GET na API com o arquivo JSON
@@ -39,15 +40,20 @@ public class GamePresenter {
                 GamesListEntity gamesListEntity = response.body();
                 //se a lista nao for vazia, ou seja, se a resposta foi bem sucedida
                 if(gamesListEntity != null){
+                    gamesView.stopProgressBar();
                     gamesView.atualizaLista(gamesListEntity.getGames());
                 }
                 //senao mostra mensagem de erro
-                else
+                else{
+                    gamesView.stopProgressBar();
                     gamesView.mensagemDeErro(gamesView.getTextFromR(R.string.msg_erro));
+                }
+
             }
             //esse método e quando nao foi possivel acessar o servidor web
             @Override
             public void onFailure(Call<GamesListEntity> call, Throwable t) {
+                gamesView.stopProgressBar();
                 gamesView.mensagemDeErro(gamesView.getTextFromR(R.string.msg_erro));
             }
         });

@@ -22,9 +22,12 @@ import zanon.andl.gameapp.games_list.MainActivity;
 
 import static zanon.andl.gameapp.games_list.MainActivity.EXTRA_GAME;
 
+/**
+ * Classe extende a YouTubeBase Activity devido a API do YouTube
+ */
+public class GamesDetail extends YouTubeBaseActivity implements GamesDatailView{
 
-public class GamesDetail extends YouTubeBaseActivity {
-
+    //bindings de todos os campos do xml
     @BindView(R.id.detailFoto)
     CircleImageView detailFoto;
 
@@ -43,6 +46,7 @@ public class GamesDetail extends YouTubeBaseActivity {
     @BindView(R.id.backButton)
     ImageView backButton;
 
+    GamesDatailPresenter gamesDatailPresenter;
     private YouTubePlayer.OnInitializedListener onInitializedListener;
 
     @Override
@@ -52,34 +56,24 @@ public class GamesDetail extends YouTubeBaseActivity {
 
         ButterKnife.bind(this);
 
+        //recebe o game da activity anterior, ou seja, da lista
+        //mais especificamente do game que o usuário tocar
         Intent intent = getIntent();
         GamesEntity game = intent.getParcelableExtra(EXTRA_GAME);
 
-        if(game != null){
-            Picasso.with(this)
-                    .load(game.getImage())
-                    .centerCrop()
-                    .fit()
-                    .into(detailFoto);
+        //define o presenter
+        gamesDatailPresenter = new GamesDatailPresenter(this);
+        gamesDatailPresenter.setCampos(game);
 
-            detailNome.setText(game.getName());
-            detailData.setText(game.getReleaseDate());
-            String plataformas = "";
-            for(int i = 0; i < game.getPlatforms().size(); i++){
-                if(i == 0)
-                    plataformas = game.getPlatforms().get(i);
-                else
-                    plataformas = plataformas + ", " + game.getPlatforms().get(i);
-            }
-            detailPlataformas.setText(plataformas);
-        }
-        else{
-            Toast.makeText(this, getString(R.string.msg_erro), Toast.LENGTH_SHORT).show();
-        }
-
+        //preprara a url para ser consumida pela API do YouTube
+        //para a API do Youtube e necessario somente a string apos o "="
+        //para isso foi utilizado o medoto slip em que se separa a String
+        //antes do = e depois do =
+        //para o video somente e necessario depois do igual, logo, a ultima posicao do vetor
         String url = game.getTrailer();
         String [] url_separada = url.split("=");
         final String final_url = url_separada[url_separada.length - 1];
+        // a youTube Data API, utiliza de um listener para inicializar o carregamente do video
         onInitializedListener = new YouTubePlayer.OnInitializedListener() {
             @Override
             public void onInitializationSuccess(YouTubePlayer.Provider provider, YouTubePlayer youTubePlayer, boolean b) {
@@ -92,12 +86,46 @@ public class GamesDetail extends YouTubeBaseActivity {
             }
         };
 
+        //initialize passa como parametro a chave que foi criada quando e cadastrado um projeto e sua API (no caso a do YouTube) no Google Developer Console.
+        //Incialmente criou-se um apk assinado com uma chave, utilizou-se o comando keytool -list -v -keystore C:\Android\keys\keysGameApp.jks
+        //para pegar a fingerpritn SHA1, que e cadastrada como certificao novamente no Google Developer Console, jutnamente ao pacote da aplicacao
         youTubePlayer.initialize("AIzaSyBO-7-ycpzNfraxgrQ9qPK9qvfu50PmN_g", onInitializedListener);
     }
 
+    /**
+     * Funcao responsavel por ser o back button da Toolbar ja que
+     * a YouTubeBaseActivity nao suporta
+     */
     @OnClick(R.id.backButton)
     public void onClick(){
         Intent intent = new Intent(this, MainActivity.class);
         startActivity(intent);
+    }
+
+    /**
+     * Seta os campos do xml com o gameEntity
+     * @param gamesEntity que e recebido pela acitivity
+     */
+    @Override
+    public void setDados(GamesEntity gamesEntity) {
+        Picasso.with(this)
+                .load(gamesEntity.getImage())
+                .centerCrop()
+                .fit()
+                .into(detailFoto);
+
+        detailNome.setText(gamesEntity.getName());
+        detailData.setText(gamesEntity.getReleaseDate());
+        String plataformas = gamesDatailPresenter.youTubeUrl(gamesEntity.getPlatforms());
+        detailPlataformas.setText(plataformas);
+    }
+
+    /**
+     * Funcao para mostrar o toast de erro
+     * @param id da string que se quer mostrar o toast
+     */
+    @Override
+    public void mensagemDeErro(int id) {
+        Toast.makeText(this, getString(id), Toast.LENGTH_SHORT).show();
     }
 }

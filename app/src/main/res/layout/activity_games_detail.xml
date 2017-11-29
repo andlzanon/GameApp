@@ -29,7 +29,6 @@
                 android:paddingTop="5dp"
                 android:src="@drawable/ic_back_button"/>
 
-
         </RelativeLayout>
 
 
@@ -66,8 +65,7 @@
                     android:id="@+id/detailNome"
                     android:textSize="20sp"
                     android:textAlignment="center"
-                    android:textColor="@color/white"
-                    android:text="Teste"/>
+                    android:textColor="@color/white" />
 
 
                 <TextView
@@ -77,8 +75,7 @@
                     android:textSize="20sp"
                     android:textColor="@color/white"
                     android:textAlignment="center"
-                    android:layout_marginTop="15dp"
-                    android:text="Teste"/>
+                    android:layout_marginTop="15dp" />
 
                 <TextView
                     android:layout_width="match_parent"
@@ -87,8 +84,7 @@
                     android:textSize="20sp"
                     android:textColor="@color/white"
                     android:textAlignment="center"
-                    android:layout_marginTop="15dp"
-                    android:text="Teste"/>
+                    android:layout_marginTop="15dp"/>
 
             </LinearLayout>
 

@@ -1,17 +1,33 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout
+<FrameLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical">
 
-    <include layout="@layout/toolbar"></include>
-
-    <android.support.v7.widget.RecyclerView
-        android:id="@+id/rv_games"
-        android:scrollbars="vertical"
+    <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_weight="9"/>
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
 
-</LinearLayout>
+        <include layout="@layout/toolbar"></include>
+
+        <android.support.v7.widget.RecyclerView
+            android:id="@+id/rv_games"
+            android:scrollbars="vertical"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+
+    </LinearLayout>
+
+
+    <ProgressBar
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:background="@null"
+        android:id="@+id/progressBar"
+        android:layout_gravity="center"
+        style="?android:attr/progressBarStyle"
+        android:max="100" />
+
+</FrameLayout>

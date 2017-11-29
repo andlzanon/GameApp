@@ -9,6 +9,7 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
+import android.widget.ProgressBar;
 import android.widget.Toast;
 
 import java.util.ArrayList;
@@ -31,8 +32,13 @@ public class MainActivity extends AppCompatActivity implements GamesView{
     @BindView(R.id.rv_games)
     RecyclerView mRecyclerView;
 
+    //binding da toolbar
     @BindView(R.id.toolbar)
     Toolbar toolbar;
+
+    //binding da progressbar
+    @BindView(R.id.progressBar)
+    ProgressBar progressBar;
 
     //declaracoes
     public GamesAdapter mAdapterGames;
@@ -53,11 +59,11 @@ public class MainActivity extends AppCompatActivity implements GamesView{
         //define o nome da action bar
         getSupportActionBar().setTitle(R.string.tokengames);
 
-        //todo: passar para a camada Presenter
         if(savedInstanceState != null)
             gameList = savedInstanceState.getParcelableArrayList(EXTRA_SAVE);
-        else
+        else{
             gameList = new ArrayList<>();
+        }
 
         //seta um adapter default para nao acusar erro de RecyclerView sem adapter
         mRecyclerView.setAdapter(new GamesAdapter(gameList, this));
@@ -90,12 +96,14 @@ public class MainActivity extends AppCompatActivity implements GamesView{
     @Override
     public void atualizaLista(List<GamesEntity> lista) {
 
+        //seta a lista da classe como a lista que vem da web
         gameList = lista;
 
         mAdapterGames = new GamesAdapter(gameList, this);
         mAdapterGames.setOnRecyclerItemClick(new OnRecyclerItemClick() {
             @Override
             public void onClick(View view, int position) {
+                //caso algum elemento seja clicado passa-se o gameEntity para a proxima Activity
                 Intent intent = new Intent(MainActivity.this, GamesDetail.class);
                 intent.putExtra(EXTRA_GAME, gameList.get(position));
                 startActivity(intent);
@@ -124,5 +132,21 @@ public class MainActivity extends AppCompatActivity implements GamesView{
     @Override
     public String getTextFromR(int id){
         return getResources().getString(id);
+    }
+
+    /**
+     * Funcao que inicia a animacao da progressBar
+     */
+    @Override
+    public void initProgressBar() {
+        progressBar.setVisibility(View.VISIBLE);
+    }
+
+    /**
+     * Funcao que para a animacao e esconde a progressBar
+     */
+    @Override
+    public void stopProgressBar() {
+        progressBar.setVisibility(View.INVISIBLE);
     }
 }

@@ -1,5 +1,7 @@
 package zanon.andl.gameapp.games_list;
 
+import android.widget.ProgressBar;
+
 import java.util.List;
 
 import zanon.andl.gameapp.entity.GamesEntity;
@@ -15,4 +17,8 @@ public interface GamesView {
     public void mensagemDeErro(String mensagem);
     //acessa os recursos do app para acessar uma String a partide do id da classe R
     public String getTextFromR(int id);
+    //incia a animacao da progressBar
+    public void initProgressBar();
+    //para a animacao da progressBar
+    public void stopProgressBar();
 }
