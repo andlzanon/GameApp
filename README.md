@@ -1,10 +1,11 @@
 # GameApp
 
-## Apresentação
+# Apresentação
 
-Aplicativo Android que acessa dados de games da web por meio de um arquivo JSON e exibê-os em uma RecyclerView. Ao clicar em um item uma tela de detalhes é aberta juntamente com o player para o vídeo do trailer no YouTube.
+	Aplicativo Android que acessa dados de games da web por meio de um arquivo JSON e exibê-os em uma RecyclerView. 
+	Ao clicar em um item na tela de detalhes é aberta juntamente com o player para o vídeo do trailer no YouTube.
 
-O projeto foi implementado no padrão Model View Presenter
+	O projeto foi implementado no padrão Model View Presenter.
 
 ## Referências a bibliotecas externas
  
