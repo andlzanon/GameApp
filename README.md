@@ -17,6 +17,8 @@
 
 * [GSON](https://github.com/google/gson)
 
+* [Picasso](https://github.com/square/picasso)
+
 * [YouTube Google API](https://developers.google.com/youtube/android/player/downloads/)
 
 
